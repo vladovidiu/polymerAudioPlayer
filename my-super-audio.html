@@ -115,7 +115,7 @@ Example:
       <div class="flex">
         <!-- Title -->
         <div id="title" class="fit">
-          {{ title }}
+          {{ src }}
         </div>
         <!-- Audio HTML5 element -->
         <audio id="audio" src="{{ src }}"></audio>
@@ -184,7 +184,7 @@ Example:
           clearInterval(player.timer.silderUpdateInterval);
         }
 
-        player.time.silderUpdateInterval = setInterval(function() {
+        player.timer.silderUpdateInterval = setInterval(function() {
           if (player.$.audio.paused) {
             clearInterval(player.timer.silderUpdateInterval);
           } else {
