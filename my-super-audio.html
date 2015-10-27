@@ -8,7 +8,7 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<link rel="import" href="../polymer/polymer.html">
+<link href="../polymer/polymer.html" rel="import">
 
 <!--
 An element providing a solution to no problem in particular.
@@ -23,125 +23,107 @@ Example:
 @hero hero.svg
 -->
 
-<dom-module id="seed-element">
+<dom-module id="my-super-audio">
   <template>
+    <!-- styling -->
     <style>
       :host {
-        display: block;
-        box-sizing: border-box;
+        width: 100%;
+      }
+      #left,
+      #right {
+        height: 50px;
+        width: 50px;
+        position: relative;
+      }
+      #left {
+        background-color: blueviolet;
       }
 
-      .author img {
-        display: block;
-        float: left;
-        margin-right: 5px;
-        max-height: 100px;
-        max-width: 100px;
+      /* Helpers */
+      .layout-horizontal {
+        display: flex;
+        -ms-flex-direction: row;
+        -webkit-flex-direction: row;
+        flex-direction: row;
+      }
+      .flex {
+        -ms-flex: 1;
+        -webkit-flex: 1;
+        flex: 1;
+      }
+      .self-start {
+        -ms-align-self: flex-start;
+        -webkit-align-self: flex-start;
+        align-self: flex-start;
+      }
+      .self-end {
+        -ms-align-self: flex-end;
+        -webkit-align-self: flex-end;
+        align-self: flex-end;
+      }
+      #title {
+        position: absolute;
+        color: blueviolet;
+        font-size: 15px;
+        text-align: center;
+        line-height: 50px;
+        z-index: 2;
+      }
+      #wrapper {
+        position: relative;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, .3);
+        cursor: pointer;
+      }
+      .fit {
+        position: absolute;
+        margin: auto;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
       }
     </style>
 
-    <h1>&lt;seed-element&gt;</h1>
-    <content></content>
-    <p class="author">
-      <img src="{{author.image}}">
-      Cheers,<br/>
-      <span class="name">{{author.name}}</span>
-    </p>
+    <!-- markup -->
+    <div class="layout-horizontal" id="wrapper" on-click="playPause">
+      <div class="self-start" id="left">
+        <!--  -->
+      </div>
+      <div class="flex">
+        <!-- Title -->
+        <div class="fit">
+          {{ title }}
+        </div>
+        <!-- Audio HTML5 element -->
+        <audio id="audio" src="{{ src }}"></audio>
+      </div>
+      <div class="self-end" id="right">
+        <!--  -->
+      </div>
+    </div>
   </template>
 
   <script>
     Polymer({
-      is: 'seed-element',
-
+      is: 'my-super-audio',
       properties: {
-        /**
-         * `fancy` indicates that the element should don a monocle and tophat,
-         * while checking its pocket watch.
-         */
-        fancy: Boolean,
-
-        /**
-         * Describes the author of the element, but is really just an excuse to
-         * show off JSDoc annotations.
-         *
-         * @type {{name: string, image: string}}
-         */
-        author: {
-          type: Object,
-          // Use `value` to provide a default value for a property, by setting it
-          // on your element's prototype.
-          //
-          // If you provide a function, as we do here, Polymer will call that
-          // _per element instance_.
-          //
-          // We do that to ensure that each element gets its own copy of the
-          // value, rather than having it shared across all instances (via the
-          // prototype).
-          value: function() {
-            return {
-              name:  'Dimitri Glazkov',
-              image: 'http://addyosmani.com/blog/wp-content/uploads/2013/04/unicorn.jpg',
-            };
-          }
-        },
+        title: String,
+        src: String
       },
 
-      // Element Lifecycle
+      playPause: function (e) {
+        e.preventDefault();
 
-      ready: function() {
-        // `ready` is called after all elements have been configured, but
-        // propagates bottom-up. This element's children are ready, but parents
-        // are not.
-        //
-        // This is the point where you should make modifications to the DOM (when
-        // necessary), or kick off any processes the element wants to perform.
-      },
+        var player = this;
 
-      attached: function() {
-        // `attached` fires once the element and its parents have been inserted
-        // into a document.
-        //
-        // This is a good place to perform any work related to your element's
-        // visual state or active behavior (measuring sizes, beginning animations,
-        // loading resources, etc).
-      },
-
-      detached: function() {
-        // The analog to `attached`, `detached` fires when the element has been
-        // removed from a document.
-        //
-        // Use this to clean up anything you did in `attached`.
-      },
-
-      // Element Behavior
-
-      /**
-       * The `seed-element-lasers` event is fired whenever `fireLasers` is called.
-       *
-       * @event seed-element-lasers
-       * @detail {{sound: String}}
-       */
-
-      /**
-       * Sometimes it's just nice to say hi.
-       *
-       * @param {string} greeting A positive greeting.
-       * @return {string} The full greeting.
-       */
-      sayHello: function(greeting) {
-        var response = greeting || 'Hello World!';
-        return 'seed-element says, ' + response;
-      },
-
-      /**
-       * Attempt to destroy this element's enemies with a beam of light!
-       *
-       * Or, at least, dispatch an event in the vain hope that someone else will
-       * do the zapping.
-       */
-      fireLasers: function() {
-        this.fire('seed-element-lasers', {sound: 'Pew pew!'});
+        if (player.$.audio.paused) {
+          player.$.audio.play();
+        } else {
+          player.$.audio.pause();
+        }
       }
     });
   </script>
+
 </dom-module>
