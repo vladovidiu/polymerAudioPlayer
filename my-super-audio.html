@@ -10,6 +10,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link href="../polymer/polymer.html" rel="import">
 <link href="../paper-progress/paper-progress.html" rel="import">
+<link href="../iron-icon/iron-icon.html" rel="import">
+<link href="../iron-icons/av-icons.html" rel="import">
 
 <!--
 An element providing a solution to no problem in particular.
@@ -97,16 +99,22 @@ Example:
         font-size: 11px;
         color: blueviolet;
       }
+      #play,
+      #pause {
+        color: #fff;
+      }
     </style>
 
     <!-- markup -->
     <div class="layout-horizontal" id="wrapper" on-click="playPause">
       <div class="self-start" id="left">
-        <!--  -->
+        <!-- Icons -->
+        <iron-icon class="fit" hidden$="{{ isPlaying }}" icon="av:play-circle-outline" id="play"></iron-icon>
+        <iron-icon class="fit" hidden$="{{ !isPlaying }}" icon="av:pause-circle-outline" id="pause"></iron-icon>
       </div>
       <div class="flex">
         <!-- Title -->
-        <div class="fit">
+        <div id="title" class="fit">
           {{ title }}
         </div>
         <!-- Audio HTML5 element -->
@@ -148,10 +156,12 @@ Example:
           player.$
             .audio
             .play();
+          player.isPlaying = true;
         } else {
           player.$
             .audio
             .pause();
+          player.isPlaying = false;
         }
       },
 
@@ -184,14 +194,16 @@ Example:
         }, 120);
       },
 
-      _convertSecToMin: function (seconds) {
+      _convertSecToMin: function(seconds) {
         if (seconds === 0) {
           return '';
         }
 
         var minutes = Math.floor(seconds / 60);
         var secondsToCalc = Math.floor(seconds % 60) + '';
-        return minutes + ':' + (secondsToCalc.length < 2 ? '0' + secondsToCalc : secondsToCalc);
+        return minutes + ':' + (secondsToCalc.length < 2
+          ? '0' + secondsToCalc
+          : secondsToCalc);
       }
     });
   </script>
