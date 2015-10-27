@@ -1,18 +1,18 @@
 {
-  "name": "seed-element",
+  "name": "my-super-audio",
   "version": "1.0.4",
   "authors": [
-    "Anonymous <anonymous@example.com>"
+    "Vlad Tutunea <vladovidiu.tutunea@gmail.com>"
   ],
-  "description": "An element providing a solution to no problem in particular.",
+  "description": "An element providing an awesome audio player.",
   "keywords": [
     "web-component",
     "polymer",
     "seed"
   ],
-  "main": "seed-element.html",
+  "main": "my-super-audio.html",
   "license": "http://polymer.github.io/LICENSE.txt",
-  "homepage": "https://github.com/<USERNAME>/seed-element/",
+  "homepage": "https://github.com/vladovidiu/polymerAudioPlayer",
   "ignore": [
     "/.*",
     "/test/"
