@@ -18,7 +18,8 @@
     "/test/"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#^1.1.5"
+    "polymer": "Polymer/polymer#^1.1.5",
+    "paper-progress": "PolymerElements/paper-progress#~1.0.7"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

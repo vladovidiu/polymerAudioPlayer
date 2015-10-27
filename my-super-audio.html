@@ -9,6 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link href="../polymer/polymer.html" rel="import">
+<link href="../paper-progress/paper-progress.html" rel="import">
 
 <!--
 An element providing a solution to no problem in particular.
@@ -83,6 +84,19 @@ Example:
         bottom: 0;
         left: 0;
       }
+      paper-progress {
+        position: relative;
+        width: 100%;
+        --paper-progress-active-color: blueviolet;
+        --paper-progress-height: 50px;
+        --paper-progress-container-color: rgba(255, 255, 255, .75);
+      }
+      #duration {
+        text-align: center;
+        line-height: 50px;
+        font-size: 11px;
+        color: blueviolet;
+      }
     </style>
 
     <!-- markup -->
@@ -97,9 +111,14 @@ Example:
         </div>
         <!-- Audio HTML5 element -->
         <audio id="audio" src="{{ src }}"></audio>
+        <!-- Paper progress bar -->
+        <paper-progress id="progress"></paper-progress>
       </div>
       <div class="self-end" id="right">
-        <!--  -->
+        <!-- Duration -->
+        <div class="fit" id="duration">
+          <span class="fit">{{_convertSecToMin(duration)}}</span>
+        </div>
       </div>
     </div>
   </template>
@@ -109,19 +128,70 @@ Example:
       is: 'my-super-audio',
       properties: {
         title: String,
-        src: String
+        src: String,
+        isPlaying: {
+          type: Boolean,
+          value: false
+        },
+        duration: {
+          type: Number,
+          vlaue: 0
+        }
       },
 
-      playPause: function (e) {
+      playPause: function(e) {
         e.preventDefault();
 
         var player = this;
 
         if (player.$.audio.paused) {
-          player.$.audio.play();
+          player.$
+            .audio
+            .play();
         } else {
-          player.$.audio.pause();
+          player.$
+            .audio
+            .pause();
         }
+      },
+
+      listeners: {
+        'audio.loadedmetadata': '_onCanPlay',
+        'audio.playing': '_startProgressTimer'
+      },
+
+      _onCanPlay: function() {
+        var player = this;
+        player.$.progress.max = player.$.audio.duration * 1000;
+        player.duration = player.$.audio.duration;
+      },
+
+      _startProgressTimer: function() {
+        var player = this;
+        player.timer = {};
+
+        if (player.timer.silderUpdateInterval) {
+          clearInterval(player.timer.silderUpdateInterval);
+        }
+
+        player.time.silderUpdateInterval = setInterval(function() {
+          if (player.$.audio.paused) {
+            clearInterval(player.timer.silderUpdateInterval);
+          } else {
+            player.$.progress.value = player.$.audio.currentTime * 1000;
+            player.currentTime = player.$.audio.currentTime;
+          }
+        }, 120);
+      },
+
+      _convertSecToMin: function (seconds) {
+        if (seconds === 0) {
+          return '';
+        }
+
+        var minutes = Math.floor(seconds / 60);
+        var secondsToCalc = Math.floor(seconds % 60) + '';
+        return minutes + ':' + (secondsToCalc.length < 2 ? '0' + secondsToCalc : secondsToCalc);
       }
     });
   </script>
